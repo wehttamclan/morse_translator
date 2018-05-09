@@ -1,4 +1,7 @@
+# require './data/input.txt'
+
 class Translator
+attr_reader :text
 
   def initialize
     @dictionary = {"a" => ".-",
@@ -39,4 +42,38 @@ class Translator
                     "0" => "-----",
                     " " => " "}
   end
+
+
+  def eng_to_morse(text)
+    eng = text.downcase.each_char.to_a.compact # ['h','e','l','l','o']
+    morse = ""
+    eng.each do |char|
+      morse += @dictionary[char].to_s
+    end
+    morse
+  end
+
+
+  def from_file(file)
+    print_this = ""
+    IO.foreach(file) do |line|
+      print_this += eng_to_morse(line) + "\n"
+    end
+    print_this
+  end
+
+  def morse_to_eng(text)
+    morse = text.split
+    eng = ""
+    @dictionary.keys.map do |key|
+      morse.find do |char|
+        char == key
+      end
+      eng += key
+    end
+    eng
+  end
+
+
+
 end
